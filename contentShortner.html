@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Shortener</title>
+</head>
+
+
+<body>
+   
+  <script src="https://cdn.jsdelivr.net/npm/compressjs@0.3.3/dist/compressjs.min.js"></script>
+
+  <script>
+   // Input text
+const text = 'This is a sample text that you have asked for.  You just said that you are going to listen to a song. Amar is not talking and not really making any sense to me. He says weird stuff and that is quite not good for someone working in this company. I am not pleased with the level of humor of some people. The varying sense of humor does not allow everyone to enjoy the talking and working. There is a meeting going on in the meeting room and although they are a full team with a tech stack and all, they can not figure out how to start the LED. They cannot make the connection with the laptop and that is strange to say the least.';
+
+// Tokenization
+const sentences = text.split('.').map(sentence => sentence.trim());
+
+// Preprocessing
+const processedSentences = sentences.map(sentence => {
+  // Remove punctuation and convert to lowercase
+  const cleanSentence = sentence.replace(/[^\w\s]/g, '').toLowerCase();
+  return cleanSentence;
+});
+
+// Scoring (using a simple example with sentence length)
+const scores = processedSentences.map(sentence => sentence.length);
+
+// Sentence Compression
+const compressionRatio = 0.5; // Reduce the text length by 50%
+const topSentencesCount = Math.floor(sentences.length * compressionRatio);
+const topSentences = scores
+  .map((score, index) => ({ score, sentence: sentences[index] }))
+  .sort((a, b) => b.score - a.score)
+  .slice(0, topSentencesCount)
+  .map(item => item.sentence);
+
+// Reconstruction
+const compressedText = topSentences.join('. ');
+
+console.log('Compressed Text:', compressedText);
+
+
+  </script>
+</body>
+</html>
+
